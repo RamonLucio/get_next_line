@@ -6,11 +6,16 @@
 /*   By: rlucio-l <rlucio-l@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 17:42:23 by rlucio-l          #+#    #+#             */
-/*   Updated: 2021/09/28 18:23:23 by rlucio-l         ###   ########.fr       */
+/*   Updated: 2021/09/28 20:25:34 by rlucio-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+static char	*getline(char **static_buffer)
+{
+
+}
 
 /*
 ** NAME
@@ -31,4 +36,5 @@ char	*get_next_line(int fd)
 
 	if (fd == -1 || BUFFER_SIZE <= 0)
 		return (NULL);
+	line = get_line(&static_buffer);
 }
