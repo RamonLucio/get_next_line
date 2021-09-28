@@ -6,7 +6,7 @@
 /*   By: rlucio-l <rlucio-l@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 17:42:23 by rlucio-l          #+#    #+#             */
-/*   Updated: 2021/09/28 08:36:33 by rlucio-l         ###   ########.fr       */
+/*   Updated: 2021/09/28 08:39:12 by rlucio-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,6 @@
 
 char	*get_next_line(int fd)
 {
-	if (fd == -1)
+	if (fd == -1 || BUFFER_SIZE <= 0)
 		return (NULL);
 }
