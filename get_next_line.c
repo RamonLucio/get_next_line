@@ -6,7 +6,7 @@
 /*   By: rlucio-l <rlucio-l@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 17:42:23 by rlucio-l          #+#    #+#             */
-/*   Updated: 2021/09/28 09:38:26 by rlucio-l         ###   ########.fr       */
+/*   Updated: 2021/09/28 18:23:23 by rlucio-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@
 
 char	*get_next_line(int fd)
 {
+	static char		*buffer;
+	static char		*static_buffer;
+	static char		*line;
+
 	if (fd == -1 || BUFFER_SIZE <= 0)
 		return (NULL);
 }
