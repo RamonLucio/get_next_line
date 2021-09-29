@@ -6,7 +6,7 @@
 /*   By: rlucio-l <rlucio-l@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 17:42:23 by rlucio-l          #+#    #+#             */
-/*   Updated: 2021/09/29 09:59:37 by rlucio-l         ###   ########.fr       */
+/*   Updated: 2021/09/29 10:40:25 by rlucio-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,27 +22,27 @@
 ** 		On success, returns a string containing
 ** 		the first line found on buffer
 ** 		If there is no newline character or else,
-** 		retuns NULL
+** 		returns NULL
 */
 
-static char	*get_line(char **static_buffer)
+static char	*get_line(char **buffer_remainder)
 {
 	char	*ptr_to_newline_char;
 	size_t	line_size;
 	char	*line;
 	char	*temp_buffer;
 
-	if (*static_buffer == NULL)
+	if (*buffer_remainder == NULL)
 		return (NULL);
-	ptr_to_newline_char = ft_strchr(*static_buffer, '\n');
+	ptr_to_newline_char = ft_strchr(*buffer_remainder, '\n');
 	if (ptr_to_newline_char)
 	{
-		line_size = (ptr_to_newline_char - *static_buffer) + 1;
-		line = ft_substr(*static_buffer, 0, line_size);
+		line_size = (ptr_to_newline_char - *buffer_remainder) + 1;
+		line = ft_substr(*buffer_remainder, 0, line_size);
 		ptr_to_newline_char++;
 		temp_buffer = ft_strdup(ptr_to_newline_char);
-		free(*static_buffer);
-		*static_buffer = ft_strdup(temp_buffer);
+		free(*buffer_remainder);
+		*buffer_remainder = ft_strdup(temp_buffer);
 		free(temp_buffer);
 		return (line);
 	}
@@ -64,10 +64,18 @@ static char	*get_line(char **static_buffer)
 char	*get_next_line(int fd)
 {
 	static char		*buffer;
-	static char		*static_buffer;
+	static char		*buffer_remainder;
 	static char		*line;
+	size_t			bytes_read;
 
 	if (fd == -1 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = get_line(&static_buffer);
+	line = get_line(&buffer_remainder);
+	while (line == NULL)
+	{
+		buffer = malloc(BUFFER_SIZE + 1);
+		if (buffer == NULL)
+			return (NULL);
+		bytes_read = read(fd, buffer, BUFFER_SIZE);
+	}
 }
