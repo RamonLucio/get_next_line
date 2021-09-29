@@ -6,7 +6,7 @@
 /*   By: rlucio-l <rlucio-l@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 17:42:23 by rlucio-l          #+#    #+#             */
-/*   Updated: 2021/09/29 11:32:56 by rlucio-l         ###   ########.fr       */
+/*   Updated: 2021/09/29 11:34:27 by rlucio-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -186,7 +186,7 @@ char	*get_next_line(int fd)
 		buffer[bytes_read] = '\0';
 		assign_line(bytes_read, &buffer_remainder, &buffer, &line);
 		if (bytes_read <= 0 && buffer_remainder != NULL)
-			break;
+			break ;
 		if (bytes_read <= 0 && buffer_remainder == NULL)
 			break ;
 	}
