@@ -6,7 +6,7 @@
 /*   By: rlucio-l <rlucio-l@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 17:42:23 by rlucio-l          #+#    #+#             */
-/*   Updated: 2021/09/29 11:34:27 by rlucio-l         ###   ########.fr       */
+/*   Updated: 2021/09/29 13:12:56 by rlucio-l         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,13 +141,13 @@ static void	assign_line(size_t bytes, char **buf_rem, char **buf, char **line)
 	{
 		if (*buf_rem == NULL)
 			*buf_rem = ft_strdup("");
-		temp = ft_strjoin(*buf_rem, *buffer);
+		temp = ft_strjoin(*buf_rem, *buf);
 		free(*buf_rem);
 		*buf_rem = ft_strdup(temp);
 		free(temp);
 		*line = get_line(buf_rem);
 	}
-	free(*buffer);
+	free(*buf);
 	if (bytes <= 0 && *buf_rem != NULL)
 	{
 		*line = ft_strdup(*buf_rem);
