@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rlucio-l <rlucio-l@student.42sp.org.br>    +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 17:42:23 by rlucio-l          #+#    #+#             */
-/*   Updated: 2021/09/29 13:12:56 by rlucio-l         ###   ########.fr       */
+/*   Updated: 2021/09/30 18:29:07 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,24 +92,24 @@ static char	*ft_strjoin(char const *s1, char const *s2)
 ** 		returns NULL
 */
 
-static char	*get_line(char **buffer_remainder)
+static char	*get_line(char **static_buffer)
 {
 	char	*ptr_to_newline_char;
 	size_t	line_size;
 	char	*line;
 	char	*temp_buffer;
 
-	if (*buffer_remainder == NULL)
+	if (*static_buffer == NULL)
 		return (NULL);
-	ptr_to_newline_char = ft_strchr(*buffer_remainder, '\n');
+	ptr_to_newline_char = ft_strchr(*static_buffer, '\n');
 	if (ptr_to_newline_char)
 	{
-		line_size = (ptr_to_newline_char - *buffer_remainder) + 1;
-		line = ft_substr(*buffer_remainder, 0, line_size);
+		line_size = (ptr_to_newline_char - *static_buffer) + 1;
+		line = ft_substr(*static_buffer, 0, line_size);
 		ptr_to_newline_char++;
 		temp_buffer = ft_strdup(ptr_to_newline_char);
-		free(*buffer_remainder);
-		*buffer_remainder = ft_strdup(temp_buffer);
+		free(*static_buffer);
+		*static_buffer = ft_strdup(temp_buffer);
 		free(temp_buffer);
 		return (line);
 	}
@@ -122,37 +122,37 @@ static char	*get_line(char **buffer_remainder)
 ** 		assign_line - assign a string to the static variable line
 ** DESCRIPTION
 ** 		Receive bytes read from a previous call to read on file descriptor,
-** 		and the addresses of the static variables buffer_remainder, buffer
+** 		and the addresses of the static variables static_buffer, buffer
 ** 		and line, which were initialized in get_next_line.
 **
-** 		If read was successfully called, join buffer to buffer_remainder,
+** 		If read was successfully called, join buffer to static_buffer,
 ** 		call get_line to check if there is a line on the string created.
 ** 		If a line was found, assign it to static variable line.
 **
-** 		If read returned EOF, and there is a string stored on buffer_remainder,
-** 		assign it to line and set buffer_remainder to NULL.
+** 		If read returned EOF, and there is a string stored on static_buffer,
+** 		assign it to line and set static_buffer to NULL.
 */
 
-static void	assign_line(size_t bytes, char **buf_rem, char **buf, char **line)
+static void	assign_line(size_t bytes, char **sta_buf, char **buf, char **line)
 {
 	char	*temp;
 
 	if (bytes > 0)
 	{
-		if (*buf_rem == NULL)
-			*buf_rem = ft_strdup("");
-		temp = ft_strjoin(*buf_rem, *buf);
-		free(*buf_rem);
-		*buf_rem = ft_strdup(temp);
+		if (*sta_buf == NULL)
+			*sta_buf = ft_strdup("");
+		temp = ft_strjoin(*sta_buf, *buf);
+		free(*sta_buf);
+		*sta_buf = ft_strdup(temp);
 		free(temp);
-		*line = get_line(buf_rem);
+		*line = get_line(sta_buf);
 	}
 	free(*buf);
-	if (bytes <= 0 && *buf_rem != NULL)
+	if (bytes <= 0 && *sta_buf != NULL)
 	{
-		*line = ft_strdup(*buf_rem);
-		free(*buf_rem);
-		*buf_rem = NULL;
+		*line = ft_strdup(*sta_buf);
+		free(*sta_buf);
+		*sta_buf = NULL;
 	}
 }
 
@@ -169,14 +169,14 @@ static void	assign_line(size_t bytes, char **buf_rem, char **buf, char **line)
 
 char	*get_next_line(int fd)
 {
-	static char		*buffer;
-	static char		*buffer_remainder;
-	static char		*line;
+	char			*buffer;
+	static char		*static_buffer;
+	char			*line;
 	size_t			bytes_read;
 
 	if (fd == -1 || BUFFER_SIZE <= 0)
 		return (NULL);
-	line = get_line(&buffer_remainder);
+	line = get_line(&static_buffer);
 	while (line == NULL)
 	{
 		buffer = malloc(BUFFER_SIZE + 1);
@@ -184,10 +184,8 @@ char	*get_next_line(int fd)
 			return (NULL);
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
 		buffer[bytes_read] = '\0';
-		assign_line(bytes_read, &buffer_remainder, &buffer, &line);
-		if (bytes_read <= 0 && buffer_remainder != NULL)
-			break ;
-		if (bytes_read <= 0 && buffer_remainder == NULL)
+		assign_line(bytes_read, &static_buffer, &buffer, &line);
+		if (bytes_read <= 0 && static_buffer == NULL)
 			break ;
 	}
 	return (line);
