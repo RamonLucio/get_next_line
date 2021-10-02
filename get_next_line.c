@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 17:42:23 by rlucio-l          #+#    #+#             */
-/*   Updated: 2021/10/02 09:58:39 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/02 17:30:46 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ static char	*get_line(char **static_buffer)
 ** 		assign it to line and set static_buffer to NULL.
 */
 
-static void	assign_line(size_t bytes, char **sta_buf, char **buf, char **line)
+static void	assign_line(int bytes, char **sta_buf, char **buf, char **line)
 {
 	char	*temp;
 
@@ -173,7 +173,7 @@ char	*get_next_line(int fd)
 	char			*buffer;
 	static char		*static_buffer;
 	char			*line;
-	size_t			bytes_read;
+	int				bytes_read;
 
 	if (fd == -1 || BUFFER_SIZE <= 0)
 		return (NULL);
@@ -184,6 +184,11 @@ char	*get_next_line(int fd)
 		if (buffer == NULL)
 			return (NULL);
 		bytes_read = read(fd, buffer, BUFFER_SIZE);
+		if (bytes_read == -1)
+		{
+			free(buffer);
+			return (NULL);
+		}
 		buffer[bytes_read] = '\0';
 		assign_line(bytes_read, &static_buffer, &buffer, &line);
 		if (bytes_read <= 0 && static_buffer == NULL)
