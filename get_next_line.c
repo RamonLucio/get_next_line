@@ -6,7 +6,7 @@
 /*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/09/01 17:42:23 by rlucio-l          #+#    #+#             */
-/*   Updated: 2021/09/30 18:29:07 by user42           ###   ########.fr       */
+/*   Updated: 2021/10/02 09:58:39 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,8 @@ static void	assign_line(size_t bytes, char **sta_buf, char **buf, char **line)
 	free(*buf);
 	if (bytes <= 0 && *sta_buf != NULL)
 	{
-		*line = ft_strdup(*sta_buf);
+		if (**sta_buf != '\0')
+			*line = ft_strdup(*sta_buf);
 		free(*sta_buf);
 		*sta_buf = NULL;
 	}
